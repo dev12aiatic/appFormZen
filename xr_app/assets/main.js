@@ -1,31 +1,35 @@
 
+
+
 $(function() {
   var client = ZAFClient.init();
+  console.log(client);
   client.invoke('resize', { width: '100%', height: '120px' });
 
  // client.get('ticket.requester.id').then(
   client.get('ticket.brand.id').then(
     function(data) {
-      console.log(data);
+      
 
       var user_id = data['ticket.brand.id'];
       requestUserInfo(client, user_id);
     }
   );
 
+
+  client.on("api_notification.event_name", function(data) {
+    console.log(data.body, data.sender);
+  });
+
 });
 
 
 function requestUserInfo(client, id) {
-  // var settings = {
-  //   url: '/api/v2/brands/' + id + '.json',
-  //   type:'GET',
-  //   dataType: 'json',
-  // };
   var settings = {
-    url:'https://reqres.in/api/products/',
+    //: '/api/v2/brands/' + id + '.json',
+    url: '/api/v2/apps/apps.json',
     type:'GET',
-    dataType: 'json'
+    dataType: 'json',
   };
 
   client.request(settings).then(
