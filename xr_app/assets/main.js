@@ -1,12 +1,13 @@
 
-
+var client = ZAFClient.init();
 
 $(function() {
-  var client = ZAFClient.init();
+  console.log('starting!!!!!!!!!!!');
+  
   console.log(client);
   client.invoke('resize', { width: '100%', height: '120px' });
 
- // client.get('ticket.requester.id').then(
+// client.get('ticket.requester.id').then(
   client.get('ticket.brand.id').then(
     function(data) {
       
@@ -18,7 +19,9 @@ $(function() {
 
 
   client.on("api_notification.event_name", function(data) {
-    console.log(data.body, data.sender);
+    console.log('HE RECIBIDO ALGO!');
+    //console.log(data.body, data.sender);
+  
   });
 
 });
@@ -26,8 +29,7 @@ $(function() {
 
 function requestUserInfo(client, id) {
   var settings = {
-    //: '/api/v2/brands/' + id + '.json',
-    url: '/api/v2/apps/apps.json',
+    url: '/api/v2/brands/' + id + '.json',
     type:'GET',
     dataType: 'json',
   };
@@ -84,4 +86,25 @@ function formatDate(date) {
   };
   date = cdate.toLocaleDateString("en-us", options);
   return date;
+}
+function requestzendesk_brand_id(brand_id){
+  var settings = {
+    url: '/api/v2/brands/' + id + '.json',
+    type:'GET',
+    dataType: 'json',
+  };
+
+}
+
+function call_forms() {
+  //var client = ZAFClient.init();
+  console.log('im calling forms');
+  client.get('ticket.brand.name').then(
+    function(data) {
+      var brand_name = data['ticket.brand.name'];
+      console.log('brand_name: ');
+      console.log(brand_name);
+      
+    }
+    );
 }

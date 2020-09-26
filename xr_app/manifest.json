@@ -1,8 +1,8 @@
 {
-  "name": "Requester X-ray",
+  "name": "usame forms",
   "author": {
-    "name": "John Doe",
-    "email": "jdoe@example.com",
+    "name": "Natalia Rodriguez",
+    "email": "dev12@aiatic.com",
     "url": ""
   },
   "defaultLocale": "en",
@@ -14,5 +14,8 @@
     }
   },
   "version": "1.0",
-  "frameworkVersion": "2.0"
+  "frameworkVersion": "2.0",
+
+  "domainWhitelist": ["https://usame1599661718.zendesk.com/"]
+
 }
