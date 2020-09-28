@@ -18,13 +18,39 @@ $(function() {
   );
 
 
-  client.on("api_notification.event_name", function(data) {
+  client.on("api_notification.brand_notification", function(data) {
+    var recieved_data = {
+      'forms' : data.body
+      
+    }
     console.log('HE RECIBIDO ALGO!');
+    console.log(data.body);
+    console.log(data.body.forms);
+    console.log(data.sender);
     //console.log(data.body, data.sender);
   
   });
 
+  client.on("api_notification.event_name", function(data) {
+    var recieved_data = {
+      'forms' : data.body
+      
+    }
+    console.log('HE RECIBIDO ALGO!');
+    console.log(data.body);
+    console.log(data.body.forms);
+    console.log(data.sender);
+    //console.log(data.body, data.sender);
+  
+  });
+
+
+
 });
+
+
+
+
 
 
 function requestUserInfo(client, id) {
@@ -108,3 +134,4 @@ function call_forms() {
     }
     );
 }
+
