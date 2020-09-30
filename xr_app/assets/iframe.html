@@ -7,14 +7,22 @@
 </head>
 <body>
 
-  <div id="content">  
-  </div>
+  <!-- <div id="content">  
+  </div> -->
 
-  <footer>
-    <a href="https://mysite.github.io/support" target="_blank">Report bugs</a>
-  </footer>
-  <button onclick="call_forms()">Generar formularios</button>
-  <script id="requester-template" type="text/x-handlebars-template">
+  
+  <!-- <button class="btn btn-light findbutton" onclick="call_forms()">GENERAR FORMULARIOS</button> -->
+   
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" onclick="call_forms()"
+       data-toggle="dropdown">Dropdown Example
+      <span class="caret"></span></button>  
+      <ul id="ulist" class="dropdown-menus is_visible">
+
+      </ul>
+    </div>
+
+  <!-- <script id="requester-template" type="text/x-handlebars-template">
     <table>
     <tr>
       <td>Customer:</td>
@@ -36,15 +44,18 @@
     </tr>
     </table>
     
-  </script>
+  </script> -->
 
-  <script id="error-template" type="text/x-handlebars-template">
+  <!-- <script id="error-template" type="text/x-handlebars-template">
     <p>{{status}} - {{statusText}} error. Please report a bug at the link below.</p>
-  </script>
+  </script> -->
 
   <script src="https://cdn.jsdelivr.net/npm/handlebars@4.3.3/dist/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
   <script src="main.js"></script>
 </body>
+<!-- <footer>
+  <a href="https://mysite.github.io/support" target="_blank">Report bugs</a>
+</footer> -->
 </html>
