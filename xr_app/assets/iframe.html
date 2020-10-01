@@ -4,58 +4,32 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
   <link href="main.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-  <!-- <div id="content">  
-  </div> -->
+  
 
   
-  <!-- <button class="btn btn-light findbutton" onclick="call_forms()">GENERAR FORMULARIOS</button> -->
-   
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" onclick="call_forms()"
-       data-toggle="dropdown">Dropdown Example
-      <span class="caret"></span></button>  
-      <ul id="ulist" class="dropdown-menus is_visible">
-
-      </ul>
+  <button class="btn btn-light findbutton" onclick="call_forms()">
+    Generar Formularios</button>
+    <hr class="solid">
+    <div id="content">  
     </div>
+    <!-- <button class="btn btn-light findbutton" onclick="sync_forms()">
+      Sincronizar</button> -->
 
-  <!-- <script id="requester-template" type="text/x-handlebars-template">
-    <table>
-    <tr>
-      <td>Customer:</td>
-      <td class="data">{{name}}</td>
-    </tr>
-    {{#if tags}}
-    <tr>
-      <td>Tags:</td>
-      <td class="data">{{tags}}</td>
-    </tr>
-    {{/if}}
-    <tr>
-      <td>Added:</td>
-      <td class="data">{{created_at}}</td>
-    </tr>
-    <tr>
-      <td>Last signed in:</td>
-      <td class="data">{{last_login_at}}</td>
-    </tr>
-    </table>
-    
-  </script> -->
-
-  <!-- <script id="error-template" type="text/x-handlebars-template">
-    <p>{{status}} - {{statusText}} error. Please report a bug at the link below.</p>
-  </script> -->
+      <div class="container">
+            <button class="btn2" onclick="sync_forms()" ><i class="fa fa-refresh"></i> </button>
+      </div>
+  
 
   <script src="https://cdn.jsdelivr.net/npm/handlebars@4.3.3/dist/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
+  <script type="application/json" src="settings.json"></script>
   <script src="main.js"></script>
+  
 </body>
-<!-- <footer>
-  <a href="https://mysite.github.io/support" target="_blank">Report bugs</a>
-</footer> -->
+
 </html>

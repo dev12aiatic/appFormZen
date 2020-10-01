@@ -1,98 +1,38 @@
 
 var client = ZAFClient.init();
+var domain_
+var petition_list=[]
+function loadConfigFile() {
+  $.getJSON('settings.json', function(jd) {
+      //(jd.domain) //now available!;
+      domain_=jd.domain
+
+  });
+ 
+};
 
 $(function() {
-  console.log('starting!!!!!!!!!!!');
-  // window.onclick = function(event) {
-  //   console.log('asdasdsadsahhh');
-  //   if (!event.target.matches('.dropdown-toggle')) {
-  //     var dropdowns = document.getElementsByClassName("dropdown-menus");
-  //     var i;
-  //     for (i = 0; i < dropdowns.length; i++) {
-  //       var openDropdown = dropdowns[i];
-  //       if (openDropdown.classList.contains('is_visible')) {
-  //         openDropdown.classList.remove('is_visible');
-  //       }
-  //     }
-  //   }
-  // }
-
-  var monitor = setInterval(function(){
-    var elem = document.activeElement;
-    if(elem && elem.tagName == 'iframe_app_view_wrapper'){
-        clearInterval(monitor);
-        console.log('clicked!');
-        alert('clicked!');
-    }
-}, 100);
-  console.log(client);
-  client.invoke('resize', { width: '100%', height: '100%' });
-
-// client.get('ticket.requester.id').then(
-  client.get('ticket.brand.id').then(
-    function(data) {
-      
-
-      var user_id = data['ticket.brand.id'];
-      requestUserInfo(client, user_id);
-    }
-  );
-
+  loadConfigFile()
+  //('starting!!!!!!!!!!!');
+  client.invoke('resize', { width: '300px', height: '500px' });
 
   client.on("api_notification.brand_notification", function(data) {
     var recieved_data = {
       'forms' : data.body
       
     }
-    console.log('HE RECIBIDO ALGO!');
-    console.log(data.body);
-    console.log(data.body.forms);
-    console.log(data.sender);
-    //console.log(data.body, data.sender);
-  
+    //('HE RECIBIDO ALGO!');
+    //(data.body);
+    //(data.body.forms);
+    //(data.sender);  
   });
-
   client.on("api_notification.form_list", function(data) {
     var recieved_data = {
       'forms' : data.body
-      
     }
-
-
-    console.log('HE RECIBIDO ALGO!');
-    console.log(data.body);
-    console.log(data.body.forms_by_organization);
-    console.log(data.sender);
-   // var organizations=data.body.forms_by_organization
-  //  var leng=Object.keys(data.body.forms_by_organization).length
-   // console.log(leng);
+    //('Recibiendo listado de forms y almacenandolo en cache');
     var obj=data.body.forms_by_organization
     localStorage.setItem('orglist', JSON.stringify(obj));
-  //  localStorage['orglist'] = obj; // only strings
-   
-   // var btnbutton = document.createElement('button');
-  //  button.innerHTML = 'click me';
-    // button.onclick = function(){
-    //   // alert('here be dragons');return false;
-    //   console.log('boton presionado');
-
-    // };
-
-    // where do we want to have the button to appear?
-    // you can append it to another element just by doing something like
-    // document.getElementById('foobutton').appendChild(button);
-   // document.body.appendChild(button);
-    // var btn = document.createElement("a");
-    // btn.innerHTML="click";
-    //     var t = btn.setAttribute("href","https://www.google.com");
-    // btn.setAttribute("target","_blank");
-    //     document.body.appendChild(btn);
-
-    // btn.onclick=function(e){
-    // alert('You have clicked me..');
-    // }
-    // document.body.appendChild(btn); // Append <button> to <body>
-   
 
   });
 
@@ -102,133 +42,266 @@ $(function() {
 
 
 
-
-
-
-function requestUserInfo(client, id) {
-  var settings = {
-    url: '/api/v2/brands/' + id + '.json',
-    type:'GET',
-    dataType: 'json',
-  };
-
-  client.request(settings).then(
+function call_forms(){
+  sessionStorage.clear();
+  $.when( 
+client.get('ticket.id').then(
+  function(data) {
+    var ticket = data['ticket.id'];
+    //('ticket.id',ticket);
+    sessionStorage.setItem('ticket.id', ticket);
+   
+  },function(response) {
+    console.error('error');
+  }
+).then(client.get('ticket.requester.name').then(
+  function(data) {
+    var ticket =data['ticket.requester.name'];
+    //('ticket_requester',ticket);
+    sessionStorage.setItem('ticket.requester.name', ticket);
+   
+  },function(response) {
+    console.error('error');
+  }
+)).then(client.get('ticket.assignee.user.name').then(
+  function(data) {
+    var ticket =data['ticket.assignee.user.name'];
+    //('ticket.assignee.user.name',ticket);
+    sessionStorage.setItem('ticket.assignee.user.name', ticket);
+  },function(response) {
+    console.error('error');
+  })).then(client.get('ticket.status').then(
     function(data) {
-      console.log('data');
-      console.log(data);
-      
-      showInfo(data);
-    },
-    function(response) {
-      console.log('response');
-      console.log(response);
-      showError(response);
-    }
-  );
+      var ticket =data['ticket.status'];
+      //('ticket.status',ticket);
+      sessionStorage.setItem('ticket.status', ticket);
+      //return makesomething()
+    },function(response) {
+      console.error('error');
+    }))).then(client.get('ticket.title').then(
+      function(data) {
+        var ticket =data['ticket.title'];
+        //('ticket.title',ticket);
+        sessionStorage.setItem('ticket.title', ticket);
+        //return makesomething()
+      },function(response) {
+        console.error('error');
+      })).then(client.get('ticket.description').then(
+        function(data) {
+          var ticket =data['ticket.description'];
+          //('ticket.description',ticket);
+          sessionStorage.setItem('ticket.description', ticket);
+          //return makesomething()
+        },function(response) {
+          console.error('error');
+        })).then(client.get('ticket.priority').then(
+          function(data) {
+            var ticket =data['ticket.priority'];
+            //('ticket.priority',ticket);
+            sessionStorage.setItem('ticket.priority', ticket);
+            //return makesomething()
+          },function(response) {
+            console.error('error');
+          })).then(client.get('ticket.group.name').then(
+            function(data) {
+              var ticket =data['ticket.group.name'];
+              //('ticket.group.name',ticket);
+              sessionStorage.setItem('ticket.group.name', ticket);
+              //return makesomething()
+            },function(response) {
+              console.error('error');
+            })).then(client.get('ticket.brand.name').then(
+              function(data) {
+                var ticket =data['ticket.brand.name'];
+                //('ticket.brand.name',ticket);
+                sessionStorage.setItem('ticket.brand.name', ticket);
+                //return makesomething()
+              },function(response) {
+                console.error('error');
+              })).then(client.get('ticket.assignee.email').then(
+                function(data) {
+                  var ticket =data['ticket.assignee.email'];
+                  //('ticket.assignee.email',ticket);
+                  sessionStorage.setItem('ticket.assignee.email', ticket);
+                  //return makesomething()
+                },function(response) {
+                  console.error('error');
+                })).then(client.get('ticket.tags').then(
+                  function(data) {
+                    var ticket =data['ticket.tags'];
+                    //('ticket.tags',ticket);
+                    sessionStorage.setItem('ticket.tags', ticket);
+                    //return makesomething()
+                  },function(response) {
+                    console.error('error');
+                  })).then(client.get('ticket.satisfaction.current_rating').then(
+                    function(data) {
+                      var ticket =data['ticket.satisfaction.current_rating'];
+                      //('ticket.satisfaction.current_rating',ticket);
+                      sessionStorage.setItem('ticket.satisfaction.current_rating', ticket);
+                      //return makesomething()
+                    },function(response) {
+                      console.error('error');
+                    })).then(client.get('ticket.due_date').then(
+                      function(data) {
+                        var ticket =data['ticket.due_date'];
+                        //('ticket.due_date',ticket);
+                        sessionStorage.setItem('ticket.due_date', ticket);
+                        //return makesomething()
+                      },function(response) {
+                        console.error('error');
+                      })).then(client.get('ticket.via.channel').then(
+                        function(data) {
+                          var ticket =data['ticket.via.channel'];
+                          //('ticket.via.channel',ticket);
+                          sessionStorage.setItem('ticket.via.channel', ticket);
+                          //return makesomething()
+                        },function(response) {
+                          console.error('error');
+                        }))
+          .then(function() {
+      makesomething()
+    });
+
+    
 }
 
 
-function showInfo(data) {
-  var requester_data = {
-    'name': data.brand.name,
-    'tags': data.brand.subdomain,
-    'created_at': formatDate(data.brand.created_at),
-    'last_login_at': formatDate(data.brand.last_login_at)
-  };
 
-  var source = $("#requester-template").html();
-  var template = Handlebars.compile(source);
-  var html = template(requester_data);
-  $("#content").html(html);
-}
-
-
-function showError(response) {
-  var error_data = {
-    'status': response.status,
-    'statusText': response.statusText
-  };
-  var source = $("#error-template").html();
-  var template = Handlebars.compile(source);
-  var html = template(error_data);
-  $("#content").html(html);
-}
-
-
-function formatDate(date) {
-  var cdate = new Date(date);
-  var options = {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  };
-  date = cdate.toLocaleDateString("en-us", options);
-  return date;
-}
-function requestzendesk_brand_id(brand_id){
-  var settings = {
-    url: '/api/v2/brands/' + id + '.json',
-    type:'GET',
-    dataType: 'json',
-  };
-
-}
-// var items = document.querySelectorAll('.list-class li');
-// item.addEventListener('click', function(){}
-
-
-function call_forms() {
-  //var client = ZAFClient.init();
-  console.log('im calling forms');
+function makesomething() {
+ 
+  //('im calling forms');
   client.get('ticket.brand.name').then(
     function(data) {
       var brand_name = data['ticket.brand.name'];
-      console.log('brand_name: ');
-      console.log(brand_name);
-      //var obj = localStorage['orglist'];
-     // var obj = localStorage.getItem('orglist');
+      //('brand_name: ');
+      //(brand_name);
+
       var obj = JSON.parse(localStorage.getItem('orglist'));
-      console.log('-------------------------');
-      console.log(obj);
-      console.log('-------------------------');
-      // var selectElement = document.getElementById("id_select");
-      //   while (selectElement.length > 0) {
-      //     selectElement.remove(0);
-      //   }
-          
-      var is_visible = document.getElementById("ulist");
-      is_visible.classList.toggle("is_visible");
+     
+      
+      content=document.getElementById("content")
+      if (document.contains(document.getElementById("div_forms"))) {
+        document.getElementById("div_forms").remove();
+      }   
+     
+      result=search(brand_name,obj)
+
+      if(result==false){
+        
+        var newDiv = document.createElement("div"); 
+        newDiv.setAttribute("id","div_forms");
+        var title = document.createElement("p"); 
+        title.innerHTML=('Esta marca no se encuentra asociada con usame ')
+        newDiv.appendChild(title);
+        content.appendChild(newDiv);
+      }
+
       for (const [ key, value ] of Object.entries(obj)) {
         // do something with `key` and `value`
-       // console.log(value);
+
         var length_form=value.length
+        
         var newobj=value
-        var i=0
         if (brand_name==key)
-          {
-        ulist = document.getElementById("ulist");
-        console.log(ulist);
-        document.querySelectorAll('.li').forEach(function(a){
-          a.remove()
-          })}
-        for (const [ key1, value1 ] of Object.entries(newobj)) {
+        {
           
-          console.log('*************');
-            if (brand_name==key)
+         
+        var current_brand=brand_name
+        localStorage.setItem('current_brand', current_brand);
+
+        var newDiv = document.createElement("div"); 
+        newDiv.setAttribute("id","div_forms");
+        var div2 = document.createElement("div"); 
+        div2.setAttribute("id","div_tittle");
+    
+        var title = document.createElement("p"); 
+        var pbrand = document.createElement("p"); 
+        pbrand.setAttribute("class","pbrand")
+        newDiv.appendChild(div2);
+        newDiv.appendChild(title);
+        newDiv.appendChild(pbrand)
+        if (length_form > 0)
           {
-            
-            var list = document.createElement('li');
-            list.setAttribute("class","li")
-            var link_a = document.createElement('a');
-            link_a.innerHTML=value1.name
-            link_a.setAttribute("href","https://www.google.com")
-            link_a.setAttribute("target","_blank");
-            list.appendChild(link_a)
-            ulist.appendChild(list)
+            title.innerHTML=('Formularios asociados a la marca  ')
+            pbrand.innerHTML=(key)
+          }
+          else
+          {
+            title.innerHTML=('Esta marca no posee formularios asociados ')
           }
         
-        }
         
+       
+        }
+        for (const [ key1, value1 ] of Object.entries(newobj)) {
+          var name=value1.name;
+          var title=value1.title;
+          var unique_id=value1.unique_id;
+          var parameters_=value1.fields;
+         
+         // if(parameters_.length)
+          
+            
+          if (brand_name==key)
+        {
+          //('title:',title);
+          petition_list.length = 0;
+
+          
+          
+         
+          var subDiv = document.createElement("div"); 
+          var btn = document.createElement("a");
+          btn.innerHTML = value1.title ;
+          var domain=domain_ +"fillform/"
+          var url_form=name+'/'+unique_id
+          var parameters=''
+          var url=domain+url_form
+         
+          var strparameters=''
+         
+          if(parameters_.length>0){
+            for (var i = 0; i < parameters_.length; i+=1) {
+              var parameters = parameters_[i].split(',');
+              var req0=parameters[0];
+              var req1=parameters[1];
+              var req=sessionStorage.getItem(req1);
+              //(name,req,req1);
+              if(i==0) {
+                var newvar= '?'+req0+'='+req;
+              }else
+              {
+                var newvar= '&'+req0+'='+req; 
+              }
+              
+              strparameters+=newvar
+
+            }
+            //(strparameters);
+            var idtick=sessionStorage.getItem('ticketid');
+            var url_="\""+url+strparameters+"\""
+          }
+          else{
+            var url_="\""+url+"\""
+          }
+          
+          
+          var brand_="\""+brand_name+"\""
+          
+
+          var t = btn.setAttribute("href","#");
+          btn.setAttribute("class","btn btn-light cbutton");
+          btn.setAttribute("onclick","verify_brand(" +url_+","+brand_+")");
+          newDiv.appendChild(subDiv);
+          newDiv.appendChild(btn);
+         
+        }
+        }
+        if (brand_name==key)
+        {
+          content.appendChild(newDiv);
+        }
         
     }
       
@@ -237,4 +310,59 @@ function call_forms() {
     );
 }
 
+function verify_brand( url_ , brand_ ) {
+  client.get('ticket.brand.name').then(
+    function(data) {
+  var brand_name = data['ticket.brand.name'];
+  var brand =localStorage.getItem('current_brand');
+  var url =localStorage.getItem('url');
+ 
+      if(brand==brand_name)
+      {
+        window.open(url_, '_blank');
+      }
+      else{
+        call_forms()
+      }
 
+    });
+}
+
+function search(brand_name, obj){
+  //(brand_name );
+  //(obj );
+  var status= false
+  Object.keys(obj).forEach(function(key) {
+    
+    if (brand_name==key)
+    {
+      status=true
+      return status
+    }
+    
+    
+});
+return status
+  
+}
+
+function sync_forms(){
+  var domain =domain_
+  total_url=domain+'api/1/forms/signal/'
+  //total_url="https://jsonplaceholder.typicode.com/todos/1"
+  var settings = {
+    
+    url:total_url,
+    type:'GET',
+    secure:false,
+  };
+  
+  client.request(settings).then(
+    function(data) { 
+      //(data); 
+    },
+    function(response) {
+      console.error(response.responseText);
+    }
+  );
+}
