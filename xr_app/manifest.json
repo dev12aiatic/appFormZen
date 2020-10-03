@@ -16,6 +16,6 @@
   "version": "1.0",
   "frameworkVersion": "2.0",
 
-  "domainWhitelist": ["http://dev.usamecore.com/"]
+  "domainWhitelist": ["http://dev.usamecore.com/","http://localhost:8000/"]
 
 }

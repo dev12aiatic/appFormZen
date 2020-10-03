@@ -13,7 +13,7 @@ function loadConfigFile() {
 
 $(function() {
   loadConfigFile()
-  //('starting!!!!!!!!!!!');
+  console.log('starting!!!!!!!!!!!');
   client.invoke('resize', { width: '300px', height: '500px' });
 
   client.on("api_notification.brand_notification", function(data) {
@@ -21,7 +21,7 @@ $(function() {
       'forms' : data.body
       
     }
-    //('HE RECIBIDO ALGO!');
+    console.log('HE RECIBIDO ALGO!');
     //(data.body);
     //(data.body.forms);
     //(data.sender);  
@@ -30,7 +30,7 @@ $(function() {
     var recieved_data = {
       'forms' : data.body
     }
-    //('Recibiendo listado de forms y almacenandolo en cache');
+    console.log('Recibiendo listado de forms y almacenandolo en cache');
     var obj=data.body.forms_by_organization
     localStorage.setItem('orglist', JSON.stringify(obj));
 
@@ -175,7 +175,7 @@ function makesomething() {
     function(data) {
       var brand_name = data['ticket.brand.name'];
       //('brand_name: ');
-      //(brand_name);
+      console.log(brand_name);
 
       var obj = JSON.parse(localStorage.getItem('orglist'));
      
@@ -329,17 +329,18 @@ function verify_brand( url_ , brand_ ) {
 }
 
 function search(brand_name, obj){
-  //(brand_name );
+  console.log(brand_name );
   //(obj );
   var status= false
   Object.keys(obj).forEach(function(key) {
     
     if (brand_name==key)
     {
+      console.log('=' );
       status=true
       return status
     }
-    
+   
     
 });
 return status
@@ -349,7 +350,7 @@ return status
 function sync_forms(){
   var domain =domain_
   total_url=domain+'api/1/forms/signal/'
-  //total_url="https://jsonplaceholder.typicode.com/todos/1"
+  console.log(total_url)
   var settings = {
     
     url:total_url,
@@ -359,7 +360,7 @@ function sync_forms(){
   
   client.request(settings).then(
     function(data) { 
-      //(data); 
+      console.log(data); 
     },
     function(response) {
       console.error(response.responseText);

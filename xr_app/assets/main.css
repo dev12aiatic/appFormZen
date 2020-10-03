@@ -78,9 +78,9 @@ body{
 }
 
 .btn2 {
-  background-color: #03363D ;
+  background-color:transparent ;
   border: none;
-  color: white;
+  color:  #03363D;
   padding: 12px 16px;
   font-size: 16px;
   cursor: pointer;
