@@ -35,7 +35,14 @@ $(function() {
     localStorage.setItem('orglist', JSON.stringify(obj));
 
   });
+  client.on("api_notification.form_saved", function(data) {
+    var recieved_data = {
+      'data' : data.body
+    }
+    console.log('Recibiendo notificacion de formulario almacenado');
 
+
+  });
 
 
 });
